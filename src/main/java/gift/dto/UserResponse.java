@@ -11,8 +11,4 @@ public class UserResponse {
     public String getToken() {
         return Token;
     }
-
-    public void setToken(String Token) {
-        this.Token = Token;
-    }
 }
