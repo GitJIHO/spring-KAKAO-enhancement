@@ -22,24 +22,24 @@ public class Category {
     @NotNull
     private String color;
     @NotNull
-    private String image_url;
+    private String imageUrl;
     @NotNull
     private String description;
     @OneToMany(mappedBy = "category")
     private List<Product> products = new ArrayList<>();
 
-    public Category(String name, String color, String image_url, String description) {
+    public Category(String name, String color, String imageUrl, String description) {
         this.name = name;
         this.color = color;
-        this.image_url = image_url;
+        this.imageUrl = imageUrl;
         this.description = description;
     }
 
-    public Category(Long id, String name, String color, String image_url, String description) {
+    public Category(Long id, String name, String color, String imageUrl, String description) {
         this.id = id;
         this.name = name;
         this.color = color;
-        this.image_url = image_url;
+        this.imageUrl = imageUrl;
         this.description = description;
     }
 
@@ -59,8 +59,8 @@ public class Category {
         return color;
     }
 
-    public String getImage_url() {
-        return image_url;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public String getDescription() {

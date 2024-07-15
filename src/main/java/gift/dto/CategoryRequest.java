@@ -7,6 +7,13 @@ public class CategoryRequest {
     private String imageUrl;
     private String description;
 
+    public CategoryRequest(String name, String color, String imageUrl, String description) {
+        this.name = name;
+        this.color = color;
+        this.imageUrl = imageUrl;
+        this.description = description;
+    }
+
     public String getName() {
         return name;
     }
