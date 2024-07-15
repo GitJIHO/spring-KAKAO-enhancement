@@ -35,7 +35,7 @@ public class ProductAdminController {
     @GetMapping
     public String getAllProducts(Model model,
         @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size,
+        @RequestParam int size,
         @RequestParam(defaultValue = "id") String sortBy) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Product> productPage = productService.getAllProducts(pageable);
