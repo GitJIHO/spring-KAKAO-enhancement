@@ -106,6 +106,7 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Wish Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
+
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<ProblemDetail> handleCategoryNotFoundException(
         CategoryNotFoundException ex) {
@@ -115,6 +116,7 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Category Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
+
     @ExceptionHandler(CategoryHasProductsException.class)
     public ResponseEntity<ProblemDetail> handleCategoryHasProductsException(
         CategoryHasProductsException ex) {
