@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>상품 리스트 페이지</title>
-  <link rel="stylesheet" type="text/css" href="/css/styles.css">
+  <link href="/css/styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h1>상품 리스트 페이지</h1>
-<a th:href="@{'/admin/products/add'}" style="margin-right: 30px">추가</a>
+<a style="margin-right: 30px" th:href="@{'/admin/products/add'}">추가</a>
 <table>
   <thead>
   <tr>
@@ -23,7 +23,7 @@
     <td th:text="${product.id}">ID</td>
     <td th:text="${product.name}">Name</td>
     <td th:text="${product.price}">Price</td>
-    <td><img th:src="@{${product.img}}" alt="Product Image"/></td>
+    <td><img alt="Product Image" th:src="@{${product.img}}"/></td>
     <td th:text="${product.category.name}">Category</td>
     <td>
       <a th:href="@{'/admin/products/edit/' + ${product.id}}">수정</a>
@@ -33,10 +33,10 @@
   </tbody>
 </table>
 <div class="pagination">
-  <a th:if="${productPage.hasPrevious()}"
-     th:href="@{'/admin/products?page=' + (${productPage.number} - 1) + '&size=' + ${productPage.size} + '&sortBy=' + ${sortBy} }">이전</a>
-  <a th:if="${productPage.hasNext()}"
-     th:href="@{'/admin/products?page=' + (${productPage.number} + 1) + '&size=' + ${productPage.size} + '&sortBy=' + ${sortBy} }">다음</a>
+  <a th:href="@{'/admin/products?page=' + (${productPage.number} - 1) + '&size=' + ${productPage.size} + '&sortBy=' + ${sortBy} }"
+     th:if="${productPage.hasPrevious()}">이전</a>
+  <a th:href="@{'/admin/products?page=' + (${productPage.number} + 1) + '&size=' + ${productPage.size} + '&sortBy=' + ${sortBy} }"
+     th:if="${productPage.hasNext()}">다음</a>
 </div>
 </body>
 </html>

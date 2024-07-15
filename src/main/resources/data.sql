@@ -4,31 +4,44 @@ VALUES ('testuser@example.com', 'password');
 
 -- 카테고리 더미 데이터 추가
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('교환권', '#6c95d1', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '교환권 카테고리입니다.');
+VALUES ('교환권', '#6c95d1', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '교환권 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('상품권', '#6c95d2', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '상품권 카테고리입니다.');
+VALUES ('상품권', '#6c95d2', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '상품권 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('뷰티', '#6c95d3', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '뷰티 카테고리입니다.');
+VALUES ('뷰티', '#6c95d3', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '뷰티 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('패션', '#6c95d4', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '패션 카테고리입니다.');
+VALUES ('패션', '#6c95d4', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '패션 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('식품', '#6c95d5', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '식품 카테고리입니다.');
+VALUES ('식품', '#6c95d5', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '식품 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('리빙/도서', '#6c95d6', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '리빙/도서 카테고리입니다.');
+VALUES ('리빙/도서', '#6c95d6', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '리빙/도서 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('레저/스포츠', '#6c95d7', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '레저/스포츠 카테고리입니다.');
+VALUES ('레저/스포츠', '#6c95d7', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '레저/스포츠 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('아티스트/캐릭터', '#6c95d8', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '아티스트/캐릭터 카테고리입니다.');
+VALUES ('아티스트/캐릭터', '#6c95d8', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '아티스트/캐릭터 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('유아동/반려', '#6c95d9', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '유아동/반려 카테고리입니다.');
+VALUES ('유아동/반려', '#6c95d9', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '유아동/반려 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('디지털/가전', '#6c95da', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '디지털/가전 카테고리입니다.');
+VALUES ('디지털/가전', '#6c95da', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '디지털/가전 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('카카오프렌즈', '#6c95db', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '카카오프렌즈 카테고리입니다.');
+VALUES ('카카오프렌즈', '#6c95db', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '카카오프렌즈 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('트렌드 선물', '#6c95dc', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '트렌드 선물 카테고리입니다.');
+VALUES ('트렌드 선물', '#6c95dc', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '트렌드 선물 카테고리입니다.');
 INSERT INTO categories (name, color, image_url, description)
-VALUES ('백화점', '#6c95dd', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png', '백화점 카테고리입니다.');
+VALUES ('백화점', '#6c95dd', 'https://gift-s.kakaocdn.net/dn/gift/images/m640/dimm_theme.png',
+        '백화점 카테고리입니다.');
 
 -- 제품 더미 데이터 추가 (카테고리와 연관)
 INSERT INTO products (name, price, img, category_id)

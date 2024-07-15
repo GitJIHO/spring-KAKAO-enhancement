@@ -16,13 +16,15 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
 
-    public CategoryService(CategoryRepository categoryRepository, ProductRepository productRepository) {
+    public CategoryService(CategoryRepository categoryRepository,
+        ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
     }
 
     public Category addCategory(CategoryRequest request) {
-        Category category = new Category(request.getName(), request.getColor(), request.getImageUrl(), request.getDescription());
+        Category category = new Category(request.getName(), request.getColor(),
+            request.getImageUrl(), request.getDescription());
         return categoryRepository.save(category);
     }
 
@@ -36,12 +38,13 @@ public class CategoryService {
     }
 
     public Category updateCategory(Long id, CategoryRequest request) {
-        Category category = new Category(id, request.getName(), request.getColor(), request.getImageUrl(), request.getDescription());
+        Category category = new Category(id, request.getName(), request.getColor(),
+            request.getImageUrl(), request.getDescription());
         return categoryRepository.save(category);
     }
 
     public void deleteCategory(Long id) {
-        if(!productRepository.findByCategoryId(id).isEmpty()){
+        if (!productRepository.findByCategoryId(id).isEmpty()) {
             throw new CategoryHasProductsException("해당 카테고리에 속한 상품이 있습니다.");
         }
         categoryRepository.deleteById(id);

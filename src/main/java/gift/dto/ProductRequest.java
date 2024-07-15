@@ -28,12 +28,24 @@ public class ProductRequest {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getPrice() {
         return price;
     }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public String getImg() {
         return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public Long getCategoryId() {
@@ -42,17 +54,5 @@ public class ProductRequest {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
     }
 }

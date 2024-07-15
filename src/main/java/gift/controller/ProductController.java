@@ -30,7 +30,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<Product> getProduct(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public Page<Product> getProduct(
+        @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return productService.getAllProducts(pageable);
     }
 
