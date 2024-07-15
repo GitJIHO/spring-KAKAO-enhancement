@@ -44,19 +44,21 @@ public class WishController {
 
     @GetMapping("/{wishId}")
     public Wish getOneWish(@PathVariable Long wishId, @LoginUser User user) {
-        return wishService.getOneWish(user.getId(), wishId);
-    }
-
-    @DeleteMapping("/{wishId}")
-    public ResponseEntity<String> delete(@PathVariable Long wishId, @LoginUser User user) {
-        wishService.removeWish(user.getId(), wishId);
-        return ResponseEntity.ok("삭제되었습니다.");
+        return wishService.getWishById(user.getId(), wishId);
     }
 
     @PutMapping("/{wishId}")
     public ResponseEntity<String> updateNumber(@PathVariable Long wishId, @LoginUser User user,
         @RequestBody WishRequest wishRequest) {
+        wishService.getWishById(user.getId(), wishId);
         wishService.updateNumber(user.getId(), wishId, wishRequest.getNumber());
         return ResponseEntity.ok("수정되었습니다.");
+    }
+
+    @DeleteMapping("/{wishId}")
+    public ResponseEntity<String> delete(@PathVariable Long wishId, @LoginUser User user) {
+        wishService.getWishById(user.getId(), wishId);
+        wishService.removeWish(user.getId(), wishId);
+        return ResponseEntity.ok("삭제되었습니다.");
     }
 }

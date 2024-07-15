@@ -46,7 +46,7 @@ public class WishService {
         return wishRepository.findByUserId(userId, pageable);
     }
 
-    public Wish getOneWish(Long userId, Long wishId) {
+    public Wish getWishById(Long userId, Long wishId) {
         return wishRepository.findByUserIdAndId(userId, wishId)
             .orElseThrow(() -> new WishNotFoundException("위시 리스트가 없습니다."));
     }
