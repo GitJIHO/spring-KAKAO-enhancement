@@ -32,7 +32,7 @@
   </tr>
   </tbody>
 </table>
-<div>
+<div class="pagination">
   <a th:if="${productPage.hasPrevious()}"
      th:href="@{'/admin/products?page=' + (${productPage.number} - 1) + '&size=' + ${productPage.size} + '&sortBy=' + ${sortBy} }">이전</a>
   <a th:if="${productPage.hasNext()}"

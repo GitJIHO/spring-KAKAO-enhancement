@@ -1,5 +1,3 @@
-/* styles.css */
-
 /* Global Styles */
 body {
   font-family: Arial, sans-serif;
@@ -34,7 +32,8 @@ form p {
 }
 
 form input[type="text"],
-form input[type="number"] {
+form input[type="number"],
+form select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ced4da;
@@ -92,6 +91,27 @@ table a {
 }
 
 table a:hover {
+  background-color: #0056b3;
+}
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  margin: 0 5px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.pagination a:hover {
   background-color: #0056b3;
 }
 
