@@ -108,7 +108,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<ProblemDetail> handleCategoryNotFoundException(
-        WishNotFoundException ex) {
+        CategoryNotFoundException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
             ex.getMessage());
         problemDetail.setType(URI.create("/errors/category-not-found"));
