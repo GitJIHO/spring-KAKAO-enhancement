@@ -12,16 +12,16 @@ public class ProductRequest {
     private String name;
     private int price;
     private String img;
-    private Long category_id;
+    private Long categoryId;
 
     public ProductRequest() {
     }
 
-    public ProductRequest(String name, int price, String img, Long category_id) {
+    public ProductRequest(String name, int price, String img, Long categoryId) {
         this.name = name;
         this.price = price;
         this.img = img;
-        this.category_id = category_id;
+        this.categoryId = categoryId;
     }
 
     public String getName() {
@@ -36,7 +36,23 @@ public class ProductRequest {
         return img;
     }
 
-    public Long getCategory_id() {
-        return category_id;
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

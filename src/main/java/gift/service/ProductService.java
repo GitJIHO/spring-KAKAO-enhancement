@@ -33,7 +33,7 @@ public class ProductService {
     }
 
     public Product saveProduct(ProductRequest productRequest) {
-        Category category = categoryRepository.findById(productRequest.getCategory_id())
+        Category category = categoryRepository.findById(productRequest.getCategoryId())
             .orElseThrow(() -> new CategoryNotFoundException("category id에 해당하는 카테고리가 없습니다."));
         Product product = new Product(productRequest.getName(), productRequest.getPrice(),
             productRequest.getImg(), category);
@@ -41,7 +41,7 @@ public class ProductService {
     }
 
     public Product updateProduct(Long id, ProductRequest productRequest) {
-        Category category = categoryRepository.findById(productRequest.getCategory_id())
+        Category category = categoryRepository.findById(productRequest.getCategoryId())
             .orElseThrow(() -> new CategoryNotFoundException("category id에 해당하는 카테고리가 없습니다."));
         Product product = new Product(id, productRequest.getName(), productRequest.getPrice(),
             productRequest.getImg(), category);
