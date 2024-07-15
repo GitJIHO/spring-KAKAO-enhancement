@@ -115,4 +115,13 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Category Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
+    @ExceptionHandler(CategoryHasProductsException.class)
+    public ResponseEntity<ProblemDetail> handleCategoryHasProductsException(
+        CategoryHasProductsException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+            ex.getMessage());
+        problemDetail.setType(URI.create("/errors/category-has-products"));
+        problemDetail.setTitle("Category Has Products");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
 }
