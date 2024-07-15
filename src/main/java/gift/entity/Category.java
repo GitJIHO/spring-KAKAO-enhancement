@@ -4,7 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Category {
@@ -20,4 +25,6 @@ public class Category {
     private String imageUrl;
     @NotNull
     private String description;
+    @OneToMany(mappedBy = "category")
+    private List<Product> products = new ArrayList<>();
 }
