@@ -106,4 +106,13 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Wish Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleCategoryNotFoundException(
+        WishNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+            ex.getMessage());
+        problemDetail.setType(URI.create("/errors/category-not-found"));
+        problemDetail.setTitle("Category Not Found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
+    }
 }

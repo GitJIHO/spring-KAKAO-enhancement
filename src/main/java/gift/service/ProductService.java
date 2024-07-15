@@ -29,15 +29,13 @@ public class ProductService {
     public Product saveProduct(ProductRequest productRequest) {
         Product product = new Product(productRequest.getName(), productRequest.getPrice(),
             productRequest.getImg());
-        productRepository.save(product);
-        return product;
+        return productRepository.save(product);
     }
 
     public Product updateProduct(Long id, ProductRequest productRequest) {
         Product product = new Product(id, productRequest.getName(), productRequest.getPrice(),
             productRequest.getImg());
-        productRepository.save(product);
-        return product;
+        return productRepository.save(product);
     }
 
     public void deleteProduct(Long id) {
