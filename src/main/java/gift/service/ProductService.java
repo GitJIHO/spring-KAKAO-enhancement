@@ -1,8 +1,11 @@
 package gift.service;
 
 import gift.dto.ProductRequest;
+import gift.entity.Category;
 import gift.entity.Product;
+import gift.exception.CategoryNotFoundException;
 import gift.exception.ProductNotFoundException;
+import gift.repository.CategoryRepository;
 import gift.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,9 +15,12 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository,
+        CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public Page<Product> getAllProducts(Pageable pageable) {
@@ -27,14 +33,18 @@ public class ProductService {
     }
 
     public Product saveProduct(ProductRequest productRequest) {
+        Category category = categoryRepository.findById(productRequest.getCategory_id())
+            .orElseThrow(() -> new CategoryNotFoundException("category id에 해당하는 카테고리가 없습니다."));
         Product product = new Product(productRequest.getName(), productRequest.getPrice(),
-            productRequest.getImg());
+            productRequest.getImg(), category);
         return productRepository.save(product);
     }
 
     public Product updateProduct(Long id, ProductRequest productRequest) {
+        Category category = categoryRepository.findById(productRequest.getCategory_id())
+            .orElseThrow(() -> new CategoryNotFoundException("category id에 해당하는 카테고리가 없습니다."));
         Product product = new Product(id, productRequest.getName(), productRequest.getPrice(),
-            productRequest.getImg());
+            productRequest.getImg(), category);
         return productRepository.save(product);
     }
 

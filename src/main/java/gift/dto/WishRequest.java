@@ -2,7 +2,7 @@ package gift.dto;
 
 public class WishRequest {
 
-    private Long productId;
+    private Long product_id;
     private int number;
 
     public int getNumber() {
@@ -10,6 +10,6 @@ public class WishRequest {
     }
 
     public Long getProductId() {
-        return productId;
+        return product_id;
     }
 }

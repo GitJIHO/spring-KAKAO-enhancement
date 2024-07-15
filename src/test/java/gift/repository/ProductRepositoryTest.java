@@ -3,6 +3,7 @@ package gift.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import gift.entity.Category;
 import gift.entity.Product;
 import jakarta.validation.ConstraintViolationException;
 import java.util.Optional;
@@ -23,7 +24,8 @@ class ProductRepositoryTest {
     @Test
     @DisplayName("save 테스트")
     void saveTest() {
-        Product expected = new Product("gift", 1000, "image.jpg");
+        Category category = new Category("교환권", "#6c95d1", "image.jpg", "None");
+        Product expected = new Product("gift", 1000, "image.jpg", category);
         Product actual = productRepository.save(expected);
 
         assertThat(actual.getId()).isNotNull();
@@ -43,7 +45,8 @@ class ProductRepositoryTest {
     @Test
     @DisplayName("Valid 조건에 맞지 않는 이름이 들어갔을 경우 오류를 던지는지 테스트")
     void edgeCaseTest() {
-        Product product = new Product("아이스 아메리카노 엑스라지 사이즈", 2000, "image.jpg");
+        Category category = new Category("교환권", "#6c95d1", "image.jpg", "None");
+        Product product = new Product("아이스 아메리카노 엑스라지 사이즈", 2000, "image.jpg", category);
 
         assertThatThrownBy(() -> {
             productRepository.save(product);

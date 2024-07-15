@@ -44,6 +44,10 @@ public class Wish {
         return product;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setProduct(Product product) {
         this.product = product;
     }

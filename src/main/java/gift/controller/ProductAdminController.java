@@ -1,7 +1,9 @@
 package gift.controller;
 
 import gift.dto.ProductRequest;
+import gift.entity.Category;
 import gift.entity.Product;
+import gift.service.CategoryService;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProductAdminController {
 
     private final ProductService productService;
-
     public ProductAdminController(ProductService productService) {
         this.productService = productService;
     }
@@ -31,7 +32,7 @@ public class ProductAdminController {
     @GetMapping
     public String getAllProducts(Model model,
         @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size,
+        @RequestParam int size,
         @RequestParam(defaultValue = "id") String sortBy) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         Page<Product> productPage = productService.getAllProducts(pageable);
@@ -60,7 +61,7 @@ public class ProductAdminController {
     public String updateProductForm(@PathVariable("id") Long id, Model model) {
         Product product = productService.getProductById(id);
         ProductRequest productRequest = new ProductRequest(
-            product.getName(), product.getPrice(), product.getImg());
+            product.getName(), product.getPrice(), product.getImg(), product.getCategory().getId());
         model.addAttribute("productRequest", productRequest);
         model.addAttribute("product", product);
         return "product-form";
