@@ -4,13 +4,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gift.dto.CategoryRequest;
+import gift.dto.WishRequest;
 import gift.entity.Category;
 import gift.entity.Product;
 import gift.entity.User;
+import gift.entity.Wish;
 import gift.repository.CategoryRepository;
 import gift.repository.ProductRepository;
 import gift.repository.UserRepository;
+import gift.repository.WishRepository;
 import gift.service.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CategoryServiceTest {
+public class WishE2ETest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -32,77 +34,88 @@ class CategoryServiceTest {
     private ObjectMapper objectMapper;
 
     @Autowired
+    private WishRepository wishRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
     private TokenService tokenService;
 
     private String token;
+    private Long productId;
+    private Long wishId;
 
     @BeforeEach
     void setUp() {
-        productRepository.deleteAll();
+        wishRepository.deleteAll();
         userRepository.deleteAll();
+        productRepository.deleteAll();
         categoryRepository.deleteAll();
 
-        userRepository.save(new User("test@test.com", "123456"));
         Category category = categoryRepository.save(
-            new Category("Category 1", "#FFFFFF", "image1.jpg", "description 1"));
-        productRepository.save(new Product(1L, "Product 1", 100, "image1.jpg", category));
+            new Category("test-category", "#FFFFFF", "test.jpg", "test description"));
+        User savedUser = userRepository.save(new User("test@test.com", "123456"));
+        Product savedProduct = productRepository.save(
+            new Product("test", 1000, "test.jpg", category));
+        Wish savedWish = wishRepository.save(new Wish(savedUser, savedProduct, 10));
 
+        productId = savedProduct.getId();
+        wishId = savedWish.getId();
         token = "Bearer " + tokenService.generateToken("test@test.com");
     }
 
     @Test
     @DisplayName("save test")
-    void addCategoryTest() throws Exception {
-        CategoryRequest categoryRequest = new CategoryRequest("New Category", "#000000",
-            "image2.jpg", "New description");
+    void addWishTest() throws Exception {
+        WishRequest wishRequest = new WishRequest(productId, 5);
 
-        mockMvc.perform(post("/api/categories")
+        mockMvc.perform(post("/wishes")
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(categoryRequest)))
+                .content(objectMapper.writeValueAsString(wishRequest)))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.name").value("New Category"));
+            .andExpect(jsonPath("$.number").value(5));
     }
 
     @Test
     @DisplayName("read test")
-    void getAllCategoriesTest() throws Exception {
-        mockMvc.perform(get("/api/categories")
+    void getAllWishesTest() throws Exception {
+        mockMvc.perform(get("/wishes")
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.content[0].name").value("Category 1"));
+            .andExpect(jsonPath("$.content[0].number").value(10));
     }
 
     @Test
     @DisplayName("update test")
-    void updateCategoryTest() throws Exception {
-        CategoryRequest categoryRequest = new CategoryRequest("Updated Category", "#000000",
-            "image2.jpg", "Updated description");
+    void updateWishTest() throws Exception {
+        WishRequest wishRequest = new WishRequest(productId, 15);
 
-        mockMvc.perform(put("/api/categories/1")
+        mockMvc.perform(put("/wishes/" + wishId)
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(categoryRequest)))
+                .content(objectMapper.writeValueAsString(wishRequest)))
+            .andExpect(status().isOk());
+
+        mockMvc.perform(get("/wishes/" + wishId)
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.name").value("Updated Category"));
+            .andExpect(jsonPath("$.number").value(15));
     }
 
     @Test
     @DisplayName("delete test")
-    void deleteCategoryTest() throws Exception {
-        productRepository.deleteAll();
-
-        mockMvc.perform(delete("/api/categories/1")
+    void deleteWishTest() throws Exception {
+        mockMvc.perform(delete("/wishes/" + wishId)
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
