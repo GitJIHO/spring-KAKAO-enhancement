@@ -5,12 +5,11 @@ import jakarta.validation.constraints.Size;
 
 public class ProductRequest {
 
-
     @Size(max = 15, message = "상품 이름은 공백을 포함하여 최대 15자까지 입력할 수 있습니다.")
     @Pattern(regexp = "^[a-zA-Z0-9가-힣 ()\\[\\]+\\-&/_]*$", message = "(),[],+,-,&,/,_를 제외한 특수 문자 사용은 불가능합니다.")
     @Pattern(regexp = "^(?!.*카카오).*$", message = "카카오가 포함된 문구는 담당 MD와 협의한 경우에만 사용할 수 있습니다.")
     private String name;
-    private int price;
+    private Integer price;
     private String img;
     private Long categoryId;
 
