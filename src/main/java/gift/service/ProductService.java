@@ -59,7 +59,8 @@ public class ProductService {
 
     private void checkMinimumOption(Product product) {
         if (product.getOptions() == null || product.getOptions().isEmpty()) {
-            throw new MinimumOptionException("[상품 ID: " + product.getId() + "]의 옵션이 없습니다. 옵션을 추가해주세요.");
+            throw new MinimumOptionException(
+                "[상품 ID: " + product.getId() + "]의 옵션이 없습니다. 옵션을 추가해주세요.");
         }
     }
 }

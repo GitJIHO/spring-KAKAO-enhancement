@@ -146,6 +146,7 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Minimum Option");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
+
     @ExceptionHandler(DuplicateOptionNameException.class)
     public ResponseEntity<ProblemDetail> handleDuplicateOptionNameException(
         DuplicateOptionNameException ex) {

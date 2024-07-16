@@ -25,20 +25,24 @@ public class Option {
     public Option() {
 
     }
+
     public Option(String name, Integer quantity) {
         this.name = name;
         this.quantity = quantity;
     }
+
     public Option(Long id, String name, Integer quantity) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
     }
+
     public Option(String name, Integer quantity, Product product) {
         this.name = name;
         this.quantity = quantity;
         this.product = product;
     }
+
     public Option(Long id, String name, Integer quantity, Product product) {
         this.id = id;
         this.name = name;
