@@ -126,4 +126,24 @@ public class GlobalExceptionHandler {
         problemDetail.setTitle("Category Has Products");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
+
+    @ExceptionHandler(OptionNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleOptionNotFoundException(
+        OptionNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+            ex.getMessage());
+        problemDetail.setType(URI.create("/errors/option-not-found"));
+        problemDetail.setTitle("Option Not Found");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
+
+    @ExceptionHandler(MinimumOptionException.class)
+    public ResponseEntity<ProblemDetail> handleMinimumOptionException(
+        MinimumOptionException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+            ex.getMessage());
+        problemDetail.setType(URI.create("/errors/minimum-option"));
+        problemDetail.setTitle("Minimum Option");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
 }

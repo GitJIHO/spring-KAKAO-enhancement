@@ -21,4 +21,33 @@ public class Option {
     Integer quantity;
     @ManyToOne
     Product product;
+
+    public Option() {
+
+    }
+    public Option(String name, Integer quantity) {
+        this.name = name;
+        this.quantity = quantity;
+    }
+    public Option(Long id, String name, Integer quantity) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
 }

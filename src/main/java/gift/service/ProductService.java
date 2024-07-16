@@ -4,6 +4,7 @@ import gift.dto.ProductRequest;
 import gift.entity.Category;
 import gift.entity.Product;
 import gift.exception.CategoryNotFoundException;
+import gift.exception.MinimumOptionException;
 import gift.exception.ProductNotFoundException;
 import gift.repository.CategoryRepository;
 import gift.repository.ProductRepository;
@@ -24,12 +25,16 @@ public class ProductService {
     }
 
     public Page<Product> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable);
+        Page<Product> products = productRepository.findAll(pageable);
+        products.forEach(this::checkMinimumOption);
+        return products;
     }
 
     public Product getProductById(Long id) {
-        return productRepository.findById(id)
+        Product product = productRepository.findById(id)
             .orElseThrow(() -> new ProductNotFoundException("해당 id를 가지고있는 Product 객체가 없습니다."));
+        checkMinimumOption(product);
+        return product;
     }
 
     public Product saveProduct(ProductRequest productRequest) {
@@ -50,5 +55,11 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    private void checkMinimumOption(Product product) {
+        if (product.getOptions() == null || product.getOptions().isEmpty()) {
+            throw new MinimumOptionException("[상품 ID: " + product.getId() + "]의 옵션이 없습니다. 옵션을 추가해주세요.");
+        }
     }
 }

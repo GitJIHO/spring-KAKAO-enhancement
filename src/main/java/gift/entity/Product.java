@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -35,7 +36,6 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "product_id")
     private List<Option> options = new ArrayList<>();
 
     public Product() {
@@ -74,5 +74,10 @@ public class Product {
 
     public Category getCategory() {
         return category;
+    }
+
+    public List<Option> getOptions() {
+        options.sort(Comparator.comparing(Option::getId));
+        return options;
     }
 }

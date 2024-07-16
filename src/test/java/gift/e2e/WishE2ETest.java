@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class WishE2ETest {
+class WishE2ETest {
 
     @Autowired
     private MockMvc mockMvc;

@@ -1,45 +1,44 @@
 package gift.validation;
 
 import gift.dto.OptionRequest;
+import gift.entity.Product;
+import gift.repository.ProductRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class UniqueOptionNameForProductValidator implements
-    ConstraintValidator<UniqueOptionNameForProduct, List<OptionRequest>> {
+public class UniqueOptionNameForProductValidator implements ConstraintValidator<UniqueOptionNameForProduct, OptionRequest> {
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
-    public boolean isValid(List<OptionRequest> optionRequests, ConstraintValidatorContext context) {
-        if (optionRequests == null) {
+    public boolean isValid(OptionRequest optionRequest, ConstraintValidatorContext context) {
+        if (optionRequest == null) {
             return true;
         }
 
-        return hasUniqueNames(optionRequests, context);
-    }
+        Product product = productRepository.findById(optionRequest.getProductId())
+            .orElse(null);
 
-    private boolean hasUniqueNames(List<OptionRequest> optionRequests,
-        ConstraintValidatorContext context) {
-        Set<String> seenNames = new HashSet<>();
-        for (OptionRequest optionRequest : optionRequests) {
-            if (!isUnique(optionRequest, seenNames)) {
-                addViolation(context, "name");
-                return false;
-            }
+        if (product == null) {
+            return true;
         }
+
+        Set<String> existingNames = new HashSet<>();
+        product.getOptions().forEach(option -> existingNames.add(option.getName()));
+
+        if (existingNames.contains(optionRequest.getName())) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                .addPropertyNode("name")
+                .addConstraintViolation();
+            return false;
+        }
+
         return true;
-    }
-
-    private boolean isUnique(OptionRequest optionRequest, Set<String> seenNames) {
-        String uniqueKey = optionRequest.getProductId() + ":" + optionRequest.getName();
-        return seenNames.add(uniqueKey);
-    }
-
-    private void addViolation(ConstraintValidatorContext context, String property) {
-        context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-            .addPropertyNode(property)
-            .addConstraintViolation();
     }
 }
