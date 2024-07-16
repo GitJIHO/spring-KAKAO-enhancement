@@ -13,3 +13,12 @@
 - 추가된 부분 기반 전체적 코드 수정
 - 카테고리 repository 테스트 생성 및 구현
 - E2E 테스트 및 엔티티 테스트 추가
+
+### step2
+
+- 옵션 엔티티 및 DTO 생성
+- Product와 연관관계 생성
+- 옵션 Vaild 설정
+- 옵션을 다루는 repostiory, service와 controller 생성 및 구현
+- 옵션 repository, entity 테스트 생성 및 구현
+- 관리자 페이지 옵션 기능 추가
