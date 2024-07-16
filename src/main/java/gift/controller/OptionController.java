@@ -29,10 +29,7 @@ public class OptionController {
     @PostMapping("/{productId}/options")
     public ResponseEntity<Option> addOption(@PathVariable("productId") Long productId,
         @Valid @RequestBody OptionRequest request) {
-        if (!request.getProductId().equals(productId)) {
-            throw new IllegalArgumentException("경로의 id와 입력 id가 일치하지 않습니다.");
-        }
-        Option option = optionService.addOption(request);
+        Option option = optionService.addOption(productId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(option);
     }
 
@@ -54,16 +51,14 @@ public class OptionController {
     @PutMapping("/{productId}/options/{id}")
     public ResponseEntity<Option> updateOption(@PathVariable("productId") Long productId,
         @PathVariable("id") Long id, @Valid @RequestBody OptionRequest request) {
-        if (!request.getProductId().equals(productId)) {
-            throw new IllegalArgumentException("경로의 id와 입력 id가 일치하지 않습니다.");
-        }
-        Option option = optionService.updateOption(id, request);
+        Option option = optionService.updateOption(productId, id, request);
         return ResponseEntity.ok(option);
     }
 
-    @DeleteMapping("/options/{id}")
-    public ResponseEntity<String> deleteOption(@PathVariable("id") Long id) {
-        optionService.deleteOption(id);
+    @DeleteMapping("/{productId}/options/{id}")
+    public ResponseEntity<String> deleteOption(@PathVariable("productId") Long productId,
+        @PathVariable("id") Long id) {
+        optionService.deleteOption(productId, id);
         return ResponseEntity.ok("삭제되었습니다.");
     }
 
