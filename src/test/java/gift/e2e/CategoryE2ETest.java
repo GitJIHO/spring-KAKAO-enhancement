@@ -49,6 +49,7 @@ class CategoryE2ETest {
     private TokenService tokenService;
 
     private String token;
+    private Long categoryId;
 
     @BeforeEach
     void setUp() {
@@ -59,8 +60,9 @@ class CategoryE2ETest {
         userRepository.save(new User("test@test.com", "123456"));
         Category category = categoryRepository.save(
             new Category("Category 1", "#FFFFFF", "image1.jpg", "description 1"));
-        productRepository.save(new Product(1L, "Product 1", 100, "image1.jpg", category));
+        productRepository.save(new Product("Product 1", 100, "image1.jpg", category));
 
+        categoryId = category.getId();
         token = "Bearer " + tokenService.generateToken("test@test.com");
     }
 
@@ -94,7 +96,7 @@ class CategoryE2ETest {
         CategoryRequest categoryRequest = new CategoryRequest("Updated Category", "#000000",
             "image2.jpg", "Updated description");
 
-        mockMvc.perform(put("/api/categories/1")
+        mockMvc.perform(put("/api/categories/" + categoryId)
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(categoryRequest)))
@@ -107,7 +109,7 @@ class CategoryE2ETest {
     void deleteCategoryTest() throws Exception {
         productRepository.deleteAll();
 
-        mockMvc.perform(delete("/api/categories/1")
+        mockMvc.perform(delete("/api/categories/" + categoryId)
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
