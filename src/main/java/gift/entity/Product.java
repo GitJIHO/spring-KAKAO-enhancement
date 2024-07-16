@@ -34,6 +34,10 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "option_id")
+    private List<Option> options = new ArrayList<>();
+
     public Product() {
     }
 
