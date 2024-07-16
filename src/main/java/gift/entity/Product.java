@@ -35,7 +35,7 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "option_id")
+    @JoinColumn(name = "product_id")
     private List<Option> options = new ArrayList<>();
 
     public Product() {
