@@ -54,4 +54,7 @@ public class ProductRequest {
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
+
+    public void setId(Long id) {
+    }
 }

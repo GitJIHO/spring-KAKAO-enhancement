@@ -41,6 +41,7 @@ public class ProductAdminController {
         Page<Product> productPage = productService.getAllProducts(pageable);
         model.addAttribute("productPage", productPage);
         model.addAttribute("sortBy", sortBy);
+        model.addAttribute("productRequest", new ProductRequest());
         return "product-list";
     }
 
@@ -50,6 +51,7 @@ public class ProductAdminController {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
         Page<Category> categoryPage = categoryService.getAllCategories(pageable);
         model.addAttribute("categories", categoryPage.getContent());
+        model.addAttribute("product", new Product());
         return "product-form";
     }
 
@@ -62,13 +64,17 @@ public class ProductAdminController {
             model.addAttribute("categories", categoryPage.getContent());
             return "product-form";
         }
-        productService.saveProduct(productRequest);
-        return "redirect:/admin/products";
+        productService.setSkipOptionCheck(true);
+        Product savedProduct = productService.saveProduct(productRequest);
+        productService.setSkipOptionCheck(false);
+        return "redirect:/admin/products/edit/" + savedProduct.getId();
     }
 
     @GetMapping("/edit/{id}")
     public String updateProductForm(@PathVariable("id") Long id, Model model) {
+        productService.setSkipOptionCheck(true);
         Product product = productService.getProductById(id);
+        productService.setSkipOptionCheck(false);
         ProductRequest productRequest = new ProductRequest(
             product.getName(), product.getPrice(), product.getImg(), product.getCategory().getId());
         model.addAttribute("productRequest", productRequest);
@@ -76,6 +82,7 @@ public class ProductAdminController {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
         Page<Category> categoryPage = categoryService.getAllCategories(pageable);
         model.addAttribute("categories", categoryPage.getContent());
+        model.addAttribute("productOptions", product.getOptions());
         return "product-form";
     }
 
@@ -89,10 +96,11 @@ public class ProductAdminController {
             Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
             Page<Category> categoryPage = categoryService.getAllCategories(pageable);
             model.addAttribute("categories", categoryPage.getContent());
+            model.addAttribute("productOptions", product.getOptions());
             return "product-form";
         }
         productService.updateProduct(id, productRequest);
-        return "redirect:/admin/products";
+        return "redirect:/admin/products/edit/" + id;
     }
 
     @GetMapping("/delete/{id}")

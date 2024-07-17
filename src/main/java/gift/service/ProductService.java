@@ -17,11 +17,16 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private Boolean skipOptionCheck = false;
 
     public ProductService(ProductRepository productRepository,
         CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+    }
+
+    public void setSkipOptionCheck(boolean skip) {
+        skipOptionCheck = skip;
     }
 
     public Page<Product> getAllProducts(Pageable pageable) {
@@ -58,7 +63,8 @@ public class ProductService {
     }
 
     private void checkMinimumOption(Product product) {
-        if (product.getOptions() == null || product.getOptions().isEmpty()) {
+        if (!skipOptionCheck && (product.getOptions() == null || product.getOptions()
+            .isEmpty())) {
             throw new MinimumOptionException(
                 "[상품 ID: " + product.getId() + "]의 옵션이 없습니다. 옵션을 추가해주세요.");
         }

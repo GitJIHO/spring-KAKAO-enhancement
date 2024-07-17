@@ -83,11 +83,11 @@ public class OptionService {
         optionRepository.deleteById(id);
     }
 
-    private void checkDuplicateOptionName(Product product, String optionName, Long excludeOptionId) {
+    private void checkDuplicateOptionName(Product product, String optionName,
+        Long excludeOptionId) {
         boolean duplicate = product.getOptions().stream()
             .anyMatch(option -> option.getName().equals(optionName) &&
                 (excludeOptionId == null || !option.getId().equals(excludeOptionId)));
-
 
         if (duplicate) {
             throw new DuplicateOptionNameException("상품에 이미 동일한 옵션 이름이 존재합니다: " + optionName);
