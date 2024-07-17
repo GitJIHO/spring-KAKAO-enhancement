@@ -1,5 +1,6 @@
 package gift.dto;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -11,6 +12,7 @@ public class ProductRequest {
     private String name;
     private Integer price;
     private String img;
+    @NotNull(message = "상품에는 항상 하나의 카테고리가 있어야 합니다.")
     private Long categoryId;
 
     public ProductRequest() {

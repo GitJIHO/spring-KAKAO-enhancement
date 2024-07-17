@@ -18,10 +18,13 @@ class OptionRepositoryTest {
     @Autowired
     private OptionRepository optionRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Test
     @DisplayName("save 테스트")
     void saveTest() {
-        Category category = new Category("testName", "testColor", "testImage", "testDescription");
+        Category category = categoryRepository.save(new Category("testName", "testColor", "testImage", "testDescription"));
         Product product = new Product("testName", 1000, "testImage.jpg", category);
         Option expected = new Option("testOption", 300, product);
         Option actual = optionRepository.save(expected);

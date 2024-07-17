@@ -34,6 +34,7 @@ public class Product {
     private List<Wish> wishes = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @NotNull
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
