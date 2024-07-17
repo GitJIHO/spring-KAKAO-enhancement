@@ -28,7 +28,7 @@ public class OptionService {
             .orElseThrow(() -> new ProductNotFoundException("Product ID에 해당하는 Product가 없습니다."));
         Option option = new Option(request.getName(), request.getQuantity());
 
-        checkDuplicateOptionName(product, request.getName());
+        checkDuplicateOptionName(product, request.getName(), null);
 
         product.getOptions().add(option);
         productRepository.save(product);
@@ -55,8 +55,9 @@ public class OptionService {
         Option oldOption = optionRepository.findById(id)
             .orElseThrow(() -> new OptionNotFoundException("ID에 해당하는 옵션이 없습니다."));
 
-        checkDuplicateOptionName(product, request.getName());
-
+        if (!oldOption.getName().equals(request.getName())) {
+            checkDuplicateOptionName(product, request.getName(), id);
+        }
         product.getOptions().remove(oldOption);
 
         Option newOption = new Option(id, request.getName(), request.getQuantity());
@@ -82,9 +83,11 @@ public class OptionService {
         optionRepository.deleteById(id);
     }
 
-    private void checkDuplicateOptionName(Product product, String optionName) {
+    private void checkDuplicateOptionName(Product product, String optionName, Long excludeOptionId) {
         boolean duplicate = product.getOptions().stream()
-            .anyMatch(option -> option.getName().equals(optionName));
+            .anyMatch(option -> option.getName().equals(optionName) &&
+                (excludeOptionId == null || !option.getId().equals(excludeOptionId)));
+
 
         if (duplicate) {
             throw new DuplicateOptionNameException("상품에 이미 동일한 옵션 이름이 존재합니다: " + optionName);

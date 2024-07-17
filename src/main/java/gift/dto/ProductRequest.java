@@ -31,7 +31,7 @@ public class ProductRequest {
         this.name = name;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
