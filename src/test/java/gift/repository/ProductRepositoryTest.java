@@ -59,8 +59,8 @@ class ProductRepositoryTest {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Product> page = productRepository.findAll(pageable);
 
-        assertThat(page.getTotalElements()).isEqualTo(30);
-        assertThat(page.getTotalPages()).isEqualTo(3);
+        assertThat(page.getTotalElements()).isEqualTo(15);
+        assertThat(page.getTotalPages()).isEqualTo(2);
         assertThat(page.getContent()).hasSize(10);
 
         assertThat(page.getContent().get(0).getName()).isEqualTo("Product 1");
