@@ -1,6 +1,7 @@
 package gift.controller;
 
 import gift.dto.CategoryRequest;
+import gift.dto.ResponseMessage;
 import gift.entity.Category;
 import gift.service.CategoryService;
 import org.springframework.data.domain.Page;
@@ -53,8 +54,9 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCategory(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseMessage> deleteCategory(@PathVariable("id") Long id) {
         categoryService.deleteCategory(id);
-        return ResponseEntity.ok("삭제되었습니다.");
+        ResponseMessage responseMessage = new ResponseMessage("삭제되었습니다.");
+        return ResponseEntity.ok(responseMessage);
     }
 }

@@ -1,6 +1,7 @@
 package gift.controller;
 
 import gift.dto.OptionRequest;
+import gift.dto.ResponseMessage;
 import gift.entity.Option;
 import gift.service.OptionService;
 import jakarta.validation.Valid;
@@ -56,10 +57,11 @@ public class OptionController {
     }
 
     @DeleteMapping("/{productId}/options/{id}")
-    public ResponseEntity<String> deleteOption(@PathVariable("productId") Long productId,
+    public ResponseEntity<ResponseMessage> deleteOption(@PathVariable("productId") Long productId,
         @PathVariable("id") Long id) {
         optionService.deleteOption(productId, id);
-        return ResponseEntity.ok("삭제되었습니다.");
+        ResponseMessage responseMessage = new ResponseMessage("삭제되었습니다.");
+        return ResponseEntity.ok(responseMessage);
     }
 
 }

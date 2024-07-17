@@ -1,6 +1,7 @@
 package gift.controller;
 
 import gift.dto.ProductRequest;
+import gift.dto.ResponseMessage;
 import gift.entity.Product;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
@@ -54,8 +55,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> removeProduct(@PathVariable("id") Long id) {
+    public ResponseEntity<ResponseMessage> removeProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
-        return ResponseEntity.ok("삭제되었습니다.");
+        ResponseMessage responseMessage = new ResponseMessage("삭제되었습니다.");
+        return ResponseEntity.ok(responseMessage);
     }
 }

@@ -113,6 +113,6 @@ class CategoryE2ETest {
                 .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().string("삭제되었습니다."));
+            .andExpect(jsonPath("$.message").value("삭제되었습니다."));
     }
 }
