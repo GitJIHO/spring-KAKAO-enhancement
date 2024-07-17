@@ -30,7 +30,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<Product> getProduct(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public Page<Product> getProduct(
+        @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return productService.getAllProducts(pageable);
     }
 
@@ -48,6 +49,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<Product> changeProduct(@PathVariable("id") Long id,
         @Valid @RequestBody ProductRequest productRequest) {
+        productService.getProductById(id);
         Product product = productService.updateProduct(id, productRequest);
         return ResponseEntity.ok(product);
     }

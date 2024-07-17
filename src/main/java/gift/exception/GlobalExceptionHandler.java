@@ -16,26 +16,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ProblemDetail> handleValidationExceptions(
-        MethodArgumentNotValidException exception) {
-        ProblemDetail problemDetail = createProblemDetail(exception);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
-    }
-
-    private ProblemDetail createProblemDetail(MethodArgumentNotValidException exception) {
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problemDetail.setType(URI.create("/errors/validation-failed"));
-        problemDetail.setTitle("Validation Failed");
-        problemDetail.setDetail("하나 이상의 Validation 문제가 있습니다.");
-
-        BindingResult bindingResult = exception.getBindingResult();
-        List<ErrorDTO> errorDetails = getErrorDTOS(bindingResult);
-
-        problemDetail.setProperty("errors", errorDetails);
-        return problemDetail;
-    }
-
     private static List<ErrorDTO> getErrorDTOS(BindingResult bindingResult) {
         List<ObjectError> allErrors = bindingResult.getAllErrors();
         List<ErrorDTO> errorDetails = new ArrayList<>();
@@ -56,6 +36,26 @@ public class GlobalExceptionHandler {
             ErrorDTO errorDTO = new ErrorDTO(fieldName, errorMessage);
             errorDetails.add(errorDTO);
         }
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ProblemDetail> handleValidationExceptions(
+        MethodArgumentNotValidException exception) {
+        ProblemDetail problemDetail = createProblemDetail(exception);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
+
+    private ProblemDetail createProblemDetail(MethodArgumentNotValidException exception) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setType(URI.create("/errors/validation-failed"));
+        problemDetail.setTitle("Validation Failed");
+        problemDetail.setDetail("하나 이상의 Validation 문제가 있습니다.");
+
+        BindingResult bindingResult = exception.getBindingResult();
+        List<ErrorDTO> errorDetails = getErrorDTOS(bindingResult);
+
+        problemDetail.setProperty("errors", errorDetails);
+        return problemDetail;
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
@@ -105,5 +105,25 @@ public class GlobalExceptionHandler {
         problemDetail.setType(URI.create("/errors/wish-not-found"));
         problemDetail.setTitle("Wish Not Found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleCategoryNotFoundException(
+        CategoryNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+            ex.getMessage());
+        problemDetail.setType(URI.create("/errors/category-not-found"));
+        problemDetail.setTitle("Category Not Found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
+    }
+
+    @ExceptionHandler(CategoryHasProductsException.class)
+    public ResponseEntity<ProblemDetail> handleCategoryHasProductsException(
+        CategoryHasProductsException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+            ex.getMessage());
+        problemDetail.setType(URI.create("/errors/category-has-products"));
+        problemDetail.setTitle("Category Has Products");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 }

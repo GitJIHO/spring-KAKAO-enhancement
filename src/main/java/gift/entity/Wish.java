@@ -48,6 +48,10 @@ public class Wish {
         this.product = product;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public int getNumber() {
         return number;
     }

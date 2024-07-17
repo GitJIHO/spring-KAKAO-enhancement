@@ -5,19 +5,16 @@ public class WishRequest {
     private Long productId;
     private int number;
 
+    public WishRequest(Long product_id, int number) {
+        this.productId = product_id;
+        this.number = number;
+    }
+
     public int getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public Long getProductId() {
         return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
     }
 }
