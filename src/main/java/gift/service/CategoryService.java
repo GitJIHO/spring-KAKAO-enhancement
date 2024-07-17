@@ -23,8 +23,8 @@ public class CategoryService {
     }
 
     public Category addCategory(CategoryRequest request) {
-        Category category = new Category(request.getName(), request.getColor(),
-            request.getImageUrl(), request.getDescription());
+        Category category = new Category(request.name(), request.color(),
+            request.imageUrl(), request.description());
         return categoryRepository.save(category);
     }
 
@@ -38,8 +38,8 @@ public class CategoryService {
     }
 
     public Category updateCategory(Long id, CategoryRequest request) {
-        Category category = new Category(id, request.getName(), request.getColor(),
-            request.getImageUrl(), request.getDescription());
+        Category category = new Category(id, request.name(), request.color(),
+            request.imageUrl(), request.description());
         return categoryRepository.save(category);
     }
 
