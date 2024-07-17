@@ -38,12 +38,16 @@ public class CategoryService {
     }
 
     public Category updateCategory(Long id, CategoryRequest request) {
+        categoryRepository.findById(id).orElseThrow(
+            () -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
         Category category = new Category(id, request.name(), request.color(),
             request.imageUrl(), request.description());
         return categoryRepository.save(category);
     }
 
     public void deleteCategory(Long id) {
+        categoryRepository.findById(id).orElseThrow(
+            () -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
         if (!productRepository.findByCategoryId(id).isEmpty()) {
             throw new CategoryHasProductsException("해당 카테고리에 속한 상품이 있습니다.");
         }

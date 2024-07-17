@@ -53,12 +53,16 @@ public class ProductService {
     public Product updateProduct(Long id, ProductRequest productRequest) {
         Category category = categoryRepository.findById(productRequest.getCategoryId())
             .orElseThrow(() -> new CategoryNotFoundException("category id에 해당하는 카테고리가 없습니다."));
+        productRepository.findById(id)
+            .orElseThrow(() -> new ProductNotFoundException("해당 id를 가지고있는 Product 객체가 없습니다."));
         Product product = new Product(id, productRequest.getName(), productRequest.getPrice(),
             productRequest.getImg(), category);
         return productRepository.save(product);
     }
 
     public void deleteProduct(Long id) {
+        productRepository.findById(id)
+            .orElseThrow(() -> new ProductNotFoundException("해당 id를 가지고있는 Product 객체가 없습니다."));
         productRepository.deleteById(id);
     }
 

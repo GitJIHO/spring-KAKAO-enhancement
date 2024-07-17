@@ -52,10 +52,14 @@ public class WishService {
     }
 
     public void removeWish(Long userId, Long wishId) {
+        wishRepository.findByUserIdAndId(userId, wishId)
+            .orElseThrow(() -> new WishNotFoundException("위시 리스트가 없습니다."));
         wishRepository.deleteByUserIdAndId(userId, wishId);
     }
 
     public void updateNumber(Long userId, Long wishId, int number) {
+        wishRepository.findByUserIdAndId(userId, wishId)
+            .orElseThrow(() -> new WishNotFoundException("위시 리스트가 없습니다."));
         wishRepository.updateWishNumber(userId, wishId, number);
     }
 }
