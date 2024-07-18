@@ -1,0 +1,111 @@
+package gift.controller;
+
+import gift.dto.ProductRequest;
+import gift.entity.Category;
+import gift.entity.Product;
+import gift.service.CategoryService;
+import gift.service.ProductService;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+@RequestMapping("/admin/products")
+public class ProductAdminController {
+
+    private final ProductService productService;
+    private final CategoryService categoryService;
+
+    public ProductAdminController(ProductService productService, CategoryService categoryService) {
+        this.productService = productService;
+        this.categoryService = categoryService;
+    }
+
+    @GetMapping
+    public String getAllProducts(Model model,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "id") String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        Page<Product> productPage = productService.getAllProducts(pageable);
+        model.addAttribute("productPage", productPage);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("productRequest", new ProductRequest());
+        return "product-list";
+    }
+
+    @GetMapping("/add")
+    public String addProductForm(Model model) {
+        model.addAttribute("productRequest", new ProductRequest());
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+        Page<Category> categoryPage = categoryService.getAllCategories(pageable);
+        model.addAttribute("categories", categoryPage.getContent());
+        model.addAttribute("product", new Product());
+        return "product-form";
+    }
+
+    @PostMapping("/add")
+    public String addProduct(@Valid @ModelAttribute("productRequest") ProductRequest productRequest,
+        BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+            Page<Category> categoryPage = categoryService.getAllCategories(pageable);
+            model.addAttribute("categories", categoryPage.getContent());
+            return "product-form";
+        }
+        productService.setSkipOptionCheck(true);
+        Product savedProduct = productService.saveProduct(productRequest);
+        productService.setSkipOptionCheck(false);
+        return "redirect:/admin/products/edit/" + savedProduct.getId();
+    }
+
+    @GetMapping("/edit/{id}")
+    public String updateProductForm(@PathVariable("id") Long id, Model model) {
+        productService.setSkipOptionCheck(true);
+        Product product = productService.getProductById(id);
+        productService.setSkipOptionCheck(false);
+        ProductRequest productRequest = new ProductRequest(
+            product.getName(), product.getPrice(), product.getImg(), product.getCategory().getId());
+        model.addAttribute("productRequest", productRequest);
+        model.addAttribute("product", product);
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+        Page<Category> categoryPage = categoryService.getAllCategories(pageable);
+        model.addAttribute("categories", categoryPage.getContent());
+        model.addAttribute("productOptions", product.getOptions());
+        return "product-form";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String updateProduct(@PathVariable("id") Long id,
+        @Valid @ModelAttribute("productRequest") ProductRequest productRequest,
+        BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            Product product = productService.getProductById(id);
+            model.addAttribute("product", product);
+            Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+            Page<Category> categoryPage = categoryService.getAllCategories(pageable);
+            model.addAttribute("categories", categoryPage.getContent());
+            model.addAttribute("productOptions", product.getOptions());
+            return "product-form";
+        }
+        productService.updateProduct(id, productRequest);
+        return "redirect:/admin/products/edit/" + id;
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long id) {
+        productService.deleteProduct(id);
+        return "redirect:/admin/products";
+    }
+}
