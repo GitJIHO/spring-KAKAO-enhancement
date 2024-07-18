@@ -12,16 +12,15 @@ class OptionTest {
 
     @BeforeEach
     void setUp() {
-        option = new Option(1L, "옵션", 500);
+        option = new Option( "옵션", 500, new Product());
     }
 
     @Test
     @DisplayName("생성자 테스트")
     void OptionConstructorTest() {
-        Option newoption = new Option(2L, "new 옵션", 1000);
+        Option newoption = new Option( "new 옵션", 1000, new Product());
 
         assertThat(newoption).isNotNull();
-        assertThat(newoption.getId()).isEqualTo(2L);
         assertThat(newoption.getName()).isEqualTo("new 옵션");
         assertThat(newoption.getQuantity()).isEqualTo(1000);
     }
@@ -29,8 +28,16 @@ class OptionTest {
     @Test
     @DisplayName("Getter 테스트")
     void ProductGetterTest() {
-        assertThat(option.getId()).isEqualTo(1L);
         assertThat(option.getName()).isEqualTo("옵션");
         assertThat(option.getQuantity()).isEqualTo(500);
+    }
+
+    @Test
+    @DisplayName("updateOption 테스트")
+    void updateOptionTest() {
+        option.updateOption("업데이트 옵션", 101010, new Product());
+
+        assertThat(option.getName()).isEqualTo("업데이트 옵션");
+        assertThat(option.getQuantity()).isEqualTo(101010);
     }
 }

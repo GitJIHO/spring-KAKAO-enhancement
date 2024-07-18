@@ -11,6 +11,7 @@ import gift.repository.OptionRepository;
 import gift.repository.ProductRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OptionService {
@@ -23,17 +24,15 @@ public class OptionService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public Option addOption(Long productId, OptionRequest request) {
         Product product = productRepository.findById(productId)
             .orElseThrow(() -> new ProductNotFoundException("Product ID에 해당하는 Product가 없습니다."));
-        Option option = new Option(request.getName(), request.getQuantity());
+        Option option = optionRepository.save(new Option(request.getName(), request.getQuantity(), product));
 
         checkDuplicateOptionName(product, request.getName(), null);
 
-        product.getOptions().add(option);
-        productRepository.save(product);
-
-        return optionRepository.save(new Option(request.getName(), request.getQuantity(), product));
+        return option;
     }
 
     public List<Option> getAllOptions() {
@@ -49,23 +48,20 @@ public class OptionService {
             () -> new OptionNotFoundException("ID에 해당하는 옵션이 없습니다."));
     }
 
+    @Transactional
     public Option updateOption(Long productId, Long id, OptionRequest request) {
         Product product = productRepository.findById(productId)
             .orElseThrow(() -> new ProductNotFoundException("Product ID에 해당하는 Product가 없습니다."));
-        Option oldOption = optionRepository.findById(id)
+        Option option = optionRepository.findById(id)
             .orElseThrow(() -> new OptionNotFoundException("ID에 해당하는 옵션이 없습니다."));
 
-        if (!oldOption.getName().equals(request.getName())) {
+        if (!option.getName().equals(request.getName())) {
             checkDuplicateOptionName(product, request.getName(), id);
         }
-        product.getOptions().remove(oldOption);
 
-        Option newOption = new Option(id, request.getName(), request.getQuantity());
-        product.getOptions().add(newOption);
-        productRepository.save(product);
+        option.updateOption(request.getName(), request.getQuantity(), product);
 
-        return optionRepository.save(
-            new Option(id, request.getName(), request.getQuantity(), product));
+        return option;
     }
 
     public void deleteOption(Long productId, Long id) {
