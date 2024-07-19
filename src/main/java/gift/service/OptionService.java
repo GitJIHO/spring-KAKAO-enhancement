@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.OptionQuantityRequest;
 import gift.dto.OptionRequest;
 import gift.entity.Option;
 import gift.entity.Product;
@@ -28,7 +29,8 @@ public class OptionService {
     public Option addOption(Long productId, OptionRequest request) {
         Product product = productRepository.findById(productId)
             .orElseThrow(() -> new ProductNotFoundException("Product ID에 해당하는 Product가 없습니다."));
-        Option option = optionRepository.save(new Option(request.getName(), request.getQuantity(), product));
+        Option option = optionRepository.save(
+            new Option(request.getName(), request.getQuantity(), product));
 
         checkDuplicateOptionName(product, request.getName(), null);
 
@@ -88,6 +90,16 @@ public class OptionService {
         if (duplicate) {
             throw new DuplicateOptionNameException("상품에 이미 동일한 옵션 이름이 존재합니다: " + optionName);
         }
+    }
+
+    @Transactional
+    public Option subtractOptionQuantity(Long productId, Long id, OptionQuantityRequest request) {
+        productRepository.findById(productId)
+            .orElseThrow(() -> new ProductNotFoundException("Product id에 해당하는 상품이 없습니다."));
+        Option option = optionRepository.findById(id)
+            .orElseThrow(() -> new OptionNotFoundException("Option id에 해당하는 옵션이 없습니다."));
+        option.subtractQuantity(request.quantity());
+        return option;
     }
 
 }
