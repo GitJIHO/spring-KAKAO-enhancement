@@ -11,6 +11,7 @@ import gift.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductService {
@@ -50,14 +51,14 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(Long id, ProductRequest productRequest) {
-        Category category = categoryRepository.findById(productRequest.getCategoryId())
+    @Transactional
+    public Product updateProduct(Long id, ProductRequest request) {
+        Category category = categoryRepository.findById(request.getCategoryId())
             .orElseThrow(() -> new CategoryNotFoundException("category id에 해당하는 카테고리가 없습니다."));
-        productRepository.findById(id)
+        Product product = productRepository.findById(id)
             .orElseThrow(() -> new ProductNotFoundException("해당 id를 가지고있는 Product 객체가 없습니다."));
-        Product product = new Product(id, productRequest.getName(), productRequest.getPrice(),
-            productRequest.getImg(), category);
-        return productRepository.save(product);
+        product.updateProduct(request.getName(), request.getPrice(), request.getImg(), category);
+        return product;
     }
 
     public void deleteProduct(Long id) {

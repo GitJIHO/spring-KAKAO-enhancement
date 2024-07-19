@@ -16,6 +16,7 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Entity
 @Table(name = "products")
@@ -50,14 +51,6 @@ public class Product {
         this.category = category;
     }
 
-    public Product(Long id, String name, Integer price, String img, Category category) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.img = img;
-        this.category = category;
-    }
-
     public Long getId() {
         return id;
     }
@@ -82,4 +75,12 @@ public class Product {
         options.sort(Comparator.comparing(Option::getId));
         return options;
     }
+
+    public void updateProduct(String name, Integer price, String img, Category category) {
+        this.name = name;
+        this.price = price;
+        this.img = img;
+        this.category = category;
+    }
+
 }

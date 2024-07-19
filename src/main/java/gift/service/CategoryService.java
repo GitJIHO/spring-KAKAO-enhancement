@@ -9,6 +9,7 @@ import gift.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CategoryService {
@@ -37,12 +38,13 @@ public class CategoryService {
             () -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
     }
 
+    @Transactional
     public Category updateCategory(Long id, CategoryRequest request) {
-        categoryRepository.findById(id).orElseThrow(
+        Category category = categoryRepository.findById(id).orElseThrow(
             () -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
-        Category category = new Category(id, request.name(), request.color(),
+        category.updateCategory(request.name(), request.color(),
             request.imageUrl(), request.description());
-        return categoryRepository.save(category);
+        return category;
     }
 
     public void deleteCategory(Long id) {
