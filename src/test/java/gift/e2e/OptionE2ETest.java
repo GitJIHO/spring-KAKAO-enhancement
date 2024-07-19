@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gift.dto.OptionQuantityRequest;
 import gift.dto.OptionRequest;
 import gift.entity.Category;
 import gift.entity.Option;
@@ -146,5 +147,24 @@ class OptionE2ETest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.detail").value("상품의 옵션이 1개 이하인 경우 옵션을 삭제할 수 없습니다."));
+    }
+
+    @Test
+    @DisplayName("옵션 수량 뺴기 테스트 및 뺄셈 후 남은 옵션 수량이 1개 이하일 경우 뺄셈 방지 테스트")
+    void subtractOptionQuantityTest() throws Exception {
+        OptionQuantityRequest optionQuantityRequest = new OptionQuantityRequest(200);
+
+        mockMvc.perform(put("/api/products/" + productId + "/options/" + optionId + "/sub")
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(optionQuantityRequest)))
+            .andExpect(status().isOk());
+
+        mockMvc.perform(put("/api/products/" + productId + "/options/" + optionId + "/sub")
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(optionQuantityRequest)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.detail").value("옵션의 수량을 1개 이하로 남길 수 없습니다."));
     }
 }

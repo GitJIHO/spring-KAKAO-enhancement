@@ -1,7 +1,10 @@
 package gift.entity;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import gift.exception.MinimumOptionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,5 +42,22 @@ class OptionTest {
 
         assertThat(option.getName()).isEqualTo("업데이트 옵션");
         assertThat(option.getQuantity()).isEqualTo(101010);
+    }
+
+    @Test
+    @DisplayName("subtractQuantity 테스트")
+    void subtractQuantityTest() {
+        option.subtractQuantity(300);
+
+        assertThat(option.getQuantity()).isEqualTo(200);
+    }
+
+    @Test
+    @DisplayName("subtractQuantity 결과가 1이하 일때 오류 방출 테스트")
+    void subtractQuantityErrorTest() {
+
+        assertThatThrownBy(() -> option.subtractQuantity(499))
+            .isInstanceOf(MinimumOptionException.class)
+            .hasMessage("옵션의 수량을 1개 이하로 남길 수 없습니다.");
     }
 }
