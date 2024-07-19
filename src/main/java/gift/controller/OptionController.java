@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.OptionQuantityRequest;
 import gift.dto.OptionRequest;
 import gift.dto.ResponseMessage;
 import gift.entity.Option;
@@ -62,6 +63,13 @@ public class OptionController {
         optionService.deleteOption(productId, id);
         ResponseMessage responseMessage = new ResponseMessage("삭제되었습니다.");
         return ResponseEntity.ok(responseMessage);
+    }
+
+    @PutMapping("/{productId}/options/{id}/sub")
+    public ResponseEntity<Option> subtractOptionQuantity(@PathVariable("productId") Long productId,
+        @PathVariable("id") Long id, @RequestBody OptionQuantityRequest request) {
+        Option option = optionService.subtractOptionQuantity(productId, id, request);
+        return ResponseEntity.ok(option);
     }
 
 }
