@@ -22,3 +22,11 @@
 - 옵션을 다루는 repostiory, service와 controller 생성 및 구현
 - 옵션 repository, entity 테스트 생성 및 구현
 - 관리자 페이지 옵션 기능 추가
+
+### step3
+
+- Option entity에 상품 옵션의 수량 빼는 메서드 추가
+- 뺄 quantity를 입력받는 레코드 타입의 DTO 추가
+- OptionService에서 비즈니스 로직 구현
+- OptionController에서 실행 메서드 구현
+- E2E 테스트와 Entity 테스트에 추가된 기능 테스트 추가
