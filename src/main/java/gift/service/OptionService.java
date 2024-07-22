@@ -94,8 +94,9 @@ public class OptionService {
 
     @Transactional
     public Option subtractOptionQuantity(Long productId, Long id, OptionQuantityRequest request) {
-        productRepository.findById(productId)
-            .orElseThrow(() -> new ProductNotFoundException("Product id에 해당하는 상품이 없습니다."));
+        if (!productRepository.existsById(productId)) {
+            throw new ProductNotFoundException("Product id에 해당하는 상품이 없습니다.");
+        }
         Option option = optionRepository.findById(id)
             .orElseThrow(() -> new OptionNotFoundException("Option id에 해당하는 옵션이 없습니다."));
         option.subtractQuantity(request.quantity());

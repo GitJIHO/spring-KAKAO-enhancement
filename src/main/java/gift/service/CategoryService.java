@@ -5,7 +5,6 @@ import gift.entity.Category;
 import gift.exception.CategoryHasProductsException;
 import gift.exception.CategoryNotFoundException;
 import gift.repository.CategoryRepository;
-import gift.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,12 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final ProductRepository productRepository;
 
-    public CategoryService(CategoryRepository categoryRepository,
-        ProductRepository productRepository) {
+    public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-        this.productRepository = productRepository;
     }
 
     public Category addCategory(CategoryRequest request) {
@@ -48,9 +44,9 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long id) {
-        categoryRepository.findById(id).orElseThrow(
+        Category category = categoryRepository.findById(id).orElseThrow(
             () -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
-        if (!productRepository.findByCategoryId(id).isEmpty()) {
+        if (!category.emptyCategoryCheck()) {
             throw new CategoryHasProductsException("해당 카테고리에 속한 상품이 있습니다.");
         }
         categoryRepository.deleteById(id);

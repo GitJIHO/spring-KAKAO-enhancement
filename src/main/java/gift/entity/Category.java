@@ -26,7 +26,7 @@ public class Category {
     @NotNull
     private String description;
     @OneToMany(mappedBy = "category")
-    private List<Product> products = new ArrayList<>();
+    private final List<Product> products = new ArrayList<>();
 
     public Category(String name, String color, String imageUrl, String description) {
         this.name = name;
@@ -57,6 +57,10 @@ public class Category {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean emptyCategoryCheck() {
+        return products.isEmpty();
     }
 
     public void updateCategory(String name, String color, String imageUrl, String description) {
