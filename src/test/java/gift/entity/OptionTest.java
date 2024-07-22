@@ -59,4 +59,14 @@ class OptionTest {
             .isInstanceOf(MinimumOptionException.class)
             .hasMessage("옵션의 수량을 1개 이하로 남길 수 없습니다.");
     }
+
+    @Test
+    @DisplayName("sameName 테스트")
+    void sameNameTest() {
+        Option option2 = new Option("옵션", 400, new Product());
+
+        assertThat(option2.sameName(option.getName())).isTrue();
+        assertThat(option2.sameName("옵션")).isTrue();
+        assertThat(option2.sameName("다른옵션")).isFalse();
+    }
 }

@@ -89,7 +89,7 @@ public class Product {
         this.options.remove(option);
     }
 
-    public Integer optionSize() {
+    public Integer optionAmount() {
         return this.options.size();
     }
 }
