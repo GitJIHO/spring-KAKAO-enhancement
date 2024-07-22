@@ -16,16 +16,16 @@ public class Option {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @NotNull
-    String name;
+    private String name;
     @NotNull
-    Integer quantity;
+    private Integer quantity;
     @ManyToOne
     @JoinColumn(name = "product_id")
-    Product product;
+    private Product product;
 
-    public Option() {
+    protected Option() {
 
     }
 

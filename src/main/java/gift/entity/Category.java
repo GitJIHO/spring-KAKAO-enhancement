@@ -35,7 +35,7 @@ public class Category {
         this.description = description;
     }
 
-    public Category() {
+    protected Category() {
 
     }
 

@@ -3,6 +3,7 @@ package gift.controller;
 import gift.dto.ProductRequest;
 import gift.entity.Category;
 import gift.entity.Product;
+import gift.entity.ProductFactory;
 import gift.service.CategoryService;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
@@ -26,10 +27,12 @@ public class ProductAdminController {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final ProductFactory productFactory;
 
-    public ProductAdminController(ProductService productService, CategoryService categoryService) {
+    public ProductAdminController(ProductService productService, CategoryService categoryService, ProductFactory productFactory) {
         this.productService = productService;
         this.categoryService = categoryService;
+        this.productFactory = productFactory;
     }
 
     @GetMapping
@@ -51,7 +54,7 @@ public class ProductAdminController {
         Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
         Page<Category> categoryPage = categoryService.getAllCategories(pageable);
         model.addAttribute("categories", categoryPage.getContent());
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", productFactory.createProduct());
         return "product-form";
     }
 

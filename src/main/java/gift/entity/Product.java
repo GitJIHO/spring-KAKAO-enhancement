@@ -41,7 +41,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Option> options = new ArrayList<>();
 
-    public Product() {
+    protected Product() {
     }
 
     public Product(String name, Integer price, String img, Category category) {
