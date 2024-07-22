@@ -5,10 +5,10 @@
   <link href="/css/styles.css" rel="stylesheet" type="text/css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       let optionIndex = 0;
 
-      $('#addOptionButton').click(function() {
+      $('#addOptionButton').click(function () {
         const optionTemplate = `
           <div class="option-group" id="option-group-${optionIndex}">
             <h3>옵션 추가</h3>
@@ -23,7 +23,7 @@
         optionIndex++;
       });
 
-      $(document).on('click', '.removeOptionButton', function() {
+      $(document).on('click', '.removeOptionButton', function () {
         const index = $(this).data('index');
         $(`#option-group-${index}`).remove();
       });
@@ -35,19 +35,20 @@
 <form method="post" th:action="@{/admin/products/add}" th:object="${productCreateRequest}">
   <h3>상품 추가</h3>
   <p>Name: <input th:field="*{name}" type="text"></p>
-  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></div>
+  <div style="color: red;" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
   <p>Price: <input th:field="*{price}" type="number"></p>
-  <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color: red;"></div>
+  <div style="color: red;" th:errors="*{price}" th:if="${#fields.hasErrors('price')}"></div>
   <p>Image URL: <input th:field="*{img}" type="text"></p>
-  <div th:if="${#fields.hasErrors('img')}" th:errors="*{img}" style="color: red;"></div>
+  <div style="color: red;" th:errors="*{img}" th:if="${#fields.hasErrors('img')}"></div>
   <p>Category:
     <select th:field="*{categoryId}">
-      <option th:each="category : ${categories}" th:text="${category.name}" th:value="${category.id}"></option>
+      <option th:each="category : ${categories}" th:text="${category.name}"
+              th:value="${category.id}"></option>
     </select>
   </p>
   <div id="optionsContainer"></div>
-  <div th:if="${#fields.hasErrors('options')}" th:errors="*{options}" style="color: red;"></div>
-  <button type="button" id="addOptionButton">옵션 추가</button>
+  <div style="color: red;" th:errors="*{options}" th:if="${#fields.hasErrors('options')}"></div>
+  <button id="addOptionButton" type="button">옵션 추가</button>
   <p>
     <button type="submit">저장</button>
   </p>

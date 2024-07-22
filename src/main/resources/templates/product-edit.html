@@ -6,18 +6,20 @@
 </head>
 <body>
 <h1>상품 수정 페이지</h1>
-<form method="post" th:action="@{/admin/products/edit/{id}(id=${product.id})}" th:object="${productRequest}">
+<form method="post" th:action="@{/admin/products/edit/{id}(id=${product.id})}"
+      th:object="${productRequest}">
   <h3>상품 정보 수정</h3>
   <p>ID: <span th:text="${product.id}"></span></p>
   <p>Name: <input th:field="*{name}" th:value="${product.name}" type="text"></p>
-  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></div>
+  <div style="color: red;" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
   <p>Price: <input th:field="*{price}" th:value="${product.price}" type="number"></p>
-  <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color: red;"></div>
+  <div style="color: red;" th:errors="*{price}" th:if="${#fields.hasErrors('price')}"></div>
   <p>Image URL: <input th:field="*{img}" th:value="${product.img}" type="text"></p>
-  <div th:if="${#fields.hasErrors('img')}" th:errors="*{img}" style="color: red;"></div>
+  <div style="color: red;" th:errors="*{img}" th:if="${#fields.hasErrors('img')}"></div>
   <p>Category:
     <select th:field="*{categoryId}">
-      <option th:each="category : ${categories}" th:selected="${category.id == product.category.id}" th:text="${category.name}" th:value="${category.id}"></option>
+      <option th:each="category : ${categories}" th:selected="${category.id == product.category.id}"
+              th:text="${category.name}" th:value="${category.id}"></option>
     </select>
   </p>
   <p>

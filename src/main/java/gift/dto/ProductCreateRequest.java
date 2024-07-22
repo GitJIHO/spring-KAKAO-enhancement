@@ -40,37 +40,36 @@ public class ProductCreateRequest {
         return categoryId;
     }
 
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getPrice() {
         return price;
     }
 
-    public String getImg() {
-        return img;
-    }
-
-    public List<OptionRequest> getOptions() {
-        return options;
-    }
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public String getImg() {
+        return img;
     }
 
     public void setImg(String img) {
         this.img = img;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public List<OptionRequest> getOptions() {
+        return options;
     }
 
     public void setOptions(List<OptionRequest> options) {
