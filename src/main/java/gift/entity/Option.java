@@ -12,7 +12,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import java.util.Objects;
 
 @Entity
 @Table(name = "options")
@@ -76,23 +75,6 @@ public class Option {
         if (duplicate) {
             throw new DuplicateOptionNameException("상품에 이미 동일한 옵션 이름이 존재합니다: " + this.name);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Option option = (Option) o;
-        return Objects.equals(id, option.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 
 }
