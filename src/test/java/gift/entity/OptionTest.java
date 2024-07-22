@@ -14,13 +14,13 @@ class OptionTest {
 
     @BeforeEach
     void setUp() {
-        option = new Option( "옵션", 500, new Product());
+        option = new Option("옵션", 500, new Product());
     }
 
     @Test
     @DisplayName("생성자 테스트")
     void OptionConstructorTest() {
-        Option newoption = new Option( "new 옵션", 1000, new Product());
+        Option newoption = new Option("new 옵션", 1000, new Product());
 
         assertThat(newoption).isNotNull();
         assertThat(newoption.getName()).isEqualTo("new 옵션");

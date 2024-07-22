@@ -80,6 +80,7 @@ public class Product {
         this.img = img;
         this.category = category;
     }
+
     public List<Option> sortAndBringOptions() {
         options.sort(Comparator.comparing(Option::getId));
         return options;

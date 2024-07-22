@@ -7,7 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class UniqueOptionNamesValidator implements ConstraintValidator<UniqueOptionNames, List<OptionRequest>> {
+public class UniqueOptionNamesValidator implements
+    ConstraintValidator<UniqueOptionNames, List<OptionRequest>> {
 
     @Override
     public boolean isValid(List<OptionRequest> optionRequests, ConstraintValidatorContext context) {

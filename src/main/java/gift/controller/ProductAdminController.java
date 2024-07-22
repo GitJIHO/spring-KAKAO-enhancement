@@ -30,7 +30,8 @@ public class ProductAdminController {
     private final CategoryService categoryService;
     private final ProductFactory productFactory;
 
-    public ProductAdminController(ProductService productService, CategoryService categoryService, ProductFactory productFactory) {
+    public ProductAdminController(ProductService productService, CategoryService categoryService,
+        ProductFactory productFactory) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.productFactory = productFactory;
@@ -60,7 +61,8 @@ public class ProductAdminController {
     }
 
     @PostMapping("/add")
-    public String addProduct(@Valid @ModelAttribute("productRequest") ProductCreateRequest productCreateRequest,
+    public String addProduct(
+        @Valid @ModelAttribute("productRequest") ProductCreateRequest productCreateRequest,
         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);

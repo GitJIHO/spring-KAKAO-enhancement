@@ -47,7 +47,8 @@ public class ProductService {
             request.getImg(), category));
 
         request.getOptions().forEach(optionRequest -> {
-            Option option = new Option(optionRequest.getName(), optionRequest.getQuantity(), product);
+            Option option = new Option(optionRequest.getName(), optionRequest.getQuantity(),
+                product);
             optionRepository.save(option);
         });
 

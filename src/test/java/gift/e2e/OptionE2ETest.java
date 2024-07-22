@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gift.dto.OptionQuantityRequest;
 import gift.dto.OptionRequest;
@@ -182,7 +181,8 @@ class OptionE2ETest {
         List<OptionRequest> optionRequests = new ArrayList<>();
         optionRequests.add(optionRequest1);
         optionRequests.add(optionRequest2);
-        ProductCreateRequest productCreateRequest = new ProductCreateRequest("test", 3000, "test", categoryId, optionRequests);
+        ProductCreateRequest productCreateRequest = new ProductCreateRequest("test", 3000, "test",
+            categoryId, optionRequests);
 
         mockMvc.perform(post("/api/products")
                 .header("Authorization", token)
