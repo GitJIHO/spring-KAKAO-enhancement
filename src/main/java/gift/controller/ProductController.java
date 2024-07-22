@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.ProductCreateRequest;
 import gift.dto.ProductRequest;
 import gift.dto.ResponseMessage;
 import gift.entity.Product;
@@ -42,8 +43,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> addProduct(@Valid @RequestBody ProductRequest productRequest) {
-        Product product = productService.saveProduct(productRequest);
+    public ResponseEntity<Product> addProduct(@Valid @RequestBody ProductCreateRequest productCreateRequest) {
+        Product product = productService.saveProduct(productCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 

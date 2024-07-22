@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.ProductCreateRequest;
 import gift.dto.ProductRequest;
 import gift.entity.Category;
 import gift.entity.Product;
@@ -59,7 +60,7 @@ public class ProductAdminController {
     }
 
     @PostMapping("/add")
-    public String addProduct(@Valid @ModelAttribute("productRequest") ProductRequest productRequest,
+    public String addProduct(@Valid @ModelAttribute("productRequest") ProductCreateRequest productCreateRequest,
         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
@@ -67,17 +68,13 @@ public class ProductAdminController {
             model.addAttribute("categories", categoryPage.getContent());
             return "product-form";
         }
-        productService.setSkipOptionCheck(true);
-        Product savedProduct = productService.saveProduct(productRequest);
-        productService.setSkipOptionCheck(false);
+        Product savedProduct = productService.saveProduct(productCreateRequest);
         return "redirect:/admin/products/edit/" + savedProduct.getId();
     }
 
     @GetMapping("/edit/{id}")
     public String updateProductForm(@PathVariable("id") Long id, Model model) {
-        productService.setSkipOptionCheck(true);
         Product product = productService.getProductById(id);
-        productService.setSkipOptionCheck(false);
         ProductRequest productRequest = new ProductRequest(
             product.getName(), product.getPrice(), product.getImg(), product.getCategory().getId());
         model.addAttribute("productRequest", productRequest);

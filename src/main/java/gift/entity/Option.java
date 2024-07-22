@@ -1,5 +1,6 @@
 package gift.entity;
 
+import gift.exception.DuplicateOptionNameException;
 import gift.exception.MinimumOptionException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -59,5 +62,21 @@ public class Option {
         }
         this.quantity -= quantity;
     }
+
+    public boolean sameName(String name) {
+        return this.name.equals(name);
+    }
+
+    @PrePersist
+    @PreUpdate
+    private void checkDuplicateOptionName() {
+        boolean duplicate = product.sortAndBringOptions().stream()
+            .anyMatch(option -> option.sameName(this.name) && !option.equals(this));
+        if (duplicate) {
+            throw new DuplicateOptionNameException("상품에 이미 동일한 옵션 이름이 존재합니다: " + this.name);
+        }
+    }
+
+
 
 }
