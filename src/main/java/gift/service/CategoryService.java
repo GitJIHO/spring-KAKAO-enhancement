@@ -30,22 +30,22 @@ public class CategoryService {
     }
 
     public Category getCategoryById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(
-            () -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
+        return categoryRepository.findById(id)
+            .orElseThrow(() -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
     }
 
     @Transactional
     public Category updateCategory(Long id, CategoryRequest request) {
-        Category category = categoryRepository.findById(id).orElseThrow(
-            () -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
+        Category category = categoryRepository.findById(id)
+            .orElseThrow(() -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
         category.updateCategory(request.name(), request.color(),
             request.imageUrl(), request.description());
         return category;
     }
 
     public void deleteCategory(Long id) {
-        Category category = categoryRepository.findById(id).orElseThrow(
-            () -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
+        Category category = categoryRepository.findById(id)
+            .orElseThrow(() -> new CategoryNotFoundException("id에 해당하는 카테고리가 없습니다."));
         if (!category.emptyCategoryCheck()) {
             throw new CategoryHasProductsException("해당 카테고리에 속한 상품이 있습니다.");
         }

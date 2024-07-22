@@ -62,10 +62,12 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        productRepository.findById(id).ifPresentOrElse(
-            product -> productRepository.deleteById(id),
-            () -> { throw new ProductNotFoundException("해당 id를 가지고있는 Product 객체가 없습니다."); }
-        );
+        productRepository.findById(id)
+            .ifPresentOrElse(product -> productRepository.deleteById(id),
+                () -> {
+                    throw new ProductNotFoundException("해당 id를 가지고있는 Product 객체가 없습니다.");
+                }
+            );
     }
 
     private void checkMinimumOption(Product product) {

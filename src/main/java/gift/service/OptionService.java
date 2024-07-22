@@ -46,8 +46,8 @@ public class OptionService {
     }
 
     public Option getOneOptionById(Long id) {
-        return optionRepository.findById(id).orElseThrow(
-            () -> new OptionNotFoundException("ID에 해당하는 옵션이 없습니다."));
+        return optionRepository.findById(id).
+            orElseThrow(() -> new OptionNotFoundException("ID에 해당하는 옵션이 없습니다."));
     }
 
     @Transactional
