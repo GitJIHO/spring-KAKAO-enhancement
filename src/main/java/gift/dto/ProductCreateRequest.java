@@ -22,6 +22,15 @@ public class ProductCreateRequest {
     @UniqueOptionNames(message = "옵션 이름이 중복될 수 없습니다.")
     private List<OptionRequest> options;
 
+    public ProductCreateRequest(String name, Integer price, String img, Long categoryId,
+        List<OptionRequest> options) {
+        this.name = name;
+        this.price = price;
+        this.img = img;
+        this.categoryId = categoryId;
+        this.options = options;
+    }
+
     public Long getCategoryId() {
         return categoryId;
     }
