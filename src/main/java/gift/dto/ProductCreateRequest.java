@@ -2,9 +2,11 @@ package gift.dto;
 
 import gift.validation.UniqueOptionNames;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductCreateRequest {
@@ -17,10 +19,13 @@ public class ProductCreateRequest {
     private String img;
     @NotNull(message = "상품에는 항상 하나의 카테고리가 있어야 합니다.")
     private Long categoryId;
-    @NotNull(message = "상품의 옵션은 최소 1개가 있어야 합니다.")
+    @NotEmpty(message = "상품의 옵션은 최소 1개가 있어야 합니다.")
     @Valid
     @UniqueOptionNames(message = "옵션 이름이 중복될 수 없습니다.")
-    private List<OptionRequest> options;
+    private List<OptionRequest> options = new ArrayList<>();
+
+    public ProductCreateRequest() {
+    }
 
     public ProductCreateRequest(String name, Integer price, String img, Long categoryId,
         List<OptionRequest> options) {
@@ -49,5 +54,26 @@ public class ProductCreateRequest {
 
     public List<OptionRequest> getOptions() {
         return options;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setOptions(List<OptionRequest> options) {
+        this.options = options;
     }
 }
