@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gift.dto.OptionQuantityRequest;
 import gift.dto.OptionRequest;
+import gift.dto.ProductCreateRequest;
 import gift.entity.Category;
 import gift.entity.Option;
 import gift.entity.Product;
@@ -18,6 +19,8 @@ import gift.repository.OptionRepository;
 import gift.repository.ProductRepository;
 import gift.service.OptionService;
 import gift.service.TokenService;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,6 +59,7 @@ class OptionE2ETest {
     private Long productId;
     private Long optionId;
     private Long optionId2;
+    private Long categoryId;
 
     @BeforeEach
     void setUp() {
@@ -73,6 +77,7 @@ class OptionE2ETest {
 
         optionId = option.getId();
         optionId2 = option2.getId();
+        categoryId = category.getId();
         token = "Bearer " + tokenService.generateToken("test@test.com");
     }
 
@@ -166,5 +171,24 @@ class OptionE2ETest {
                 .content(objectMapper.writeValueAsString(optionQuantityRequest)))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.detail").value("옵션의 수량을 1개 이하로 남길 수 없습니다."));
+    }
+
+    @Test
+    @DisplayName("상품 생성시 동일한 이름의 옵션을 넣으면 오류 방출 테스트")
+    void sameOptionNameTest() throws Exception {
+        OptionRequest optionRequest1 = new OptionRequest("test1", 3);
+        OptionRequest optionRequest2 = new OptionRequest("test1", 5);
+        List<OptionRequest> optionRequests = new ArrayList<>();
+        optionRequests.add(optionRequest1);
+        optionRequests.add(optionRequest2);
+        ProductCreateRequest productCreateRequest = new ProductCreateRequest("test", 3000, "test",
+            categoryId, optionRequests);
+
+        mockMvc.perform(post("/api/products")
+                .header("Authorization", token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productCreateRequest)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errors[0].errorMessage").value("옵션 이름이 중복될 수 없습니다."));
     }
 }

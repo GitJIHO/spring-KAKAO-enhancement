@@ -47,6 +47,27 @@ class ProductTest {
         assertThat(product.getPrice()).isEqualTo(35000000);
         assertThat(product.getImg()).isEqualTo("자동차 이미지");
         assertThat(product.getCategory()).isEqualTo(category);
+    }
 
+    @Test
+    @DisplayName("removeOption 테스트")
+    void removeOptionTest() {
+        Option option = new Option("옵션", 300, product);
+        product.getOptions().add(option);
+
+        assertThat(product.getOptions().get(0).getName()).isEqualTo("옵션");
+
+        product.removeOption(option);
+
+        assertThat(product.getOptions()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("optionSize 테스트")
+    void optionSizeTest() {
+        Option option = new Option("옵션", 300, product);
+        product.getOptions().add(option);
+
+        assertThat(product.optionAmount()).isEqualTo(1);
     }
 }

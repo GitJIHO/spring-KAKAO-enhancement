@@ -27,7 +27,8 @@ class ProductRepositoryTest {
     @Test
     @DisplayName("save 테스트")
     void saveTest() {
-        Category category = categoryRepository.save(new Category("교환권", "#6c95d1", "image.jpg", "None"));
+        Category category = categoryRepository.save(
+            new Category("교환권", "#6c95d1", "image.jpg", "None"));
         Product expected = new Product("gift", 1000, "image.jpg", category);
         Product actual = productRepository.save(expected);
 
@@ -48,7 +49,8 @@ class ProductRepositoryTest {
     @Test
     @DisplayName("Valid 조건에 맞지 않는 이름이 들어갔을 경우 오류를 던지는지 테스트")
     void edgeCaseTest() {
-        Category category = categoryRepository.save(new Category("교환권", "#6c95d1", "image.jpg", "None"));
+        Category category = categoryRepository.save(
+            new Category("교환권", "#6c95d1", "image.jpg", "None"));
         Product product = new Product("아이스 아메리카노 엑스라지 사이즈", 2000, "image.jpg", category);
 
         assertThatThrownBy(() -> {

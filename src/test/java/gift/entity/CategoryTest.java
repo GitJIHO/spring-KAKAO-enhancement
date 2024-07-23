@@ -47,4 +47,10 @@ class CategoryTest {
         assertThat(category.getImageUrl()).isEqualTo("자동차 이미지");
         assertThat(category.getDescription()).isEqualTo("자동차 카테고리입니다.");
     }
+
+    @Test
+    @DisplayName("emptyCategoryCheck 테스트")
+    void emptyCategoryCheckTest() {
+        assertThat(category.emptyCategoryCheck()).isTrue();
+    }
 }

@@ -50,7 +50,8 @@ public class WishController {
     }
 
     @PutMapping("/{wishId}")
-    public ResponseEntity<ResponseMessage> updateNumber(@PathVariable Long wishId, @LoginUser User user,
+    public ResponseEntity<ResponseMessage> updateNumber(@PathVariable Long wishId,
+        @LoginUser User user,
         @RequestBody WishRequest wishRequest) {
         wishService.updateNumber(user.getId(), wishId, wishRequest.getNumber());
         ResponseMessage responseMessage = new ResponseMessage("수정되었습니다.");

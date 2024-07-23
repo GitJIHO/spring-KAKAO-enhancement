@@ -1,12 +1,14 @@
 package gift.service;
 
+import gift.dto.ProductCreateRequest;
 import gift.dto.ProductRequest;
 import gift.entity.Category;
+import gift.entity.Option;
 import gift.entity.Product;
 import gift.exception.CategoryNotFoundException;
-import gift.exception.MinimumOptionException;
 import gift.exception.ProductNotFoundException;
 import gift.repository.CategoryRepository;
+import gift.repository.OptionRepository;
 import gift.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,37 +20,39 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private Boolean skipOptionCheck = false;
+    private final OptionRepository optionRepository;
 
     public ProductService(ProductRepository productRepository,
-        CategoryRepository categoryRepository) {
+        CategoryRepository categoryRepository, OptionRepository optionRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
-    }
-
-    public void setSkipOptionCheck(boolean skip) {
-        skipOptionCheck = skip;
+        this.optionRepository = optionRepository;
     }
 
     public Page<Product> getAllProducts(Pageable pageable) {
-        Page<Product> products = productRepository.findAll(pageable);
-        products.forEach(this::checkMinimumOption);
-        return products;
+        return productRepository.findAll(pageable);
     }
 
     public Product getProductById(Long id) {
-        Product product = productRepository.findById(id)
+        return productRepository.findById(id)
             .orElseThrow(() -> new ProductNotFoundException("해당 id를 가지고있는 Product 객체가 없습니다."));
-        checkMinimumOption(product);
-        return product;
     }
 
-    public Product saveProduct(ProductRequest productRequest) {
-        Category category = categoryRepository.findById(productRequest.getCategoryId())
+    @Transactional
+    public Product saveProduct(ProductCreateRequest request) {
+        Category category = categoryRepository.findById(request.getCategoryId())
             .orElseThrow(() -> new CategoryNotFoundException("category id에 해당하는 카테고리가 없습니다."));
-        Product product = new Product(productRequest.getName(), productRequest.getPrice(),
-            productRequest.getImg(), category);
-        return productRepository.save(product);
+
+        Product product = productRepository.save(new Product(request.getName(), request.getPrice(),
+            request.getImg(), category));
+
+        request.getOptions().forEach(optionRequest -> {
+            Option option = new Option(optionRequest.getName(), optionRequest.getQuantity(),
+                product);
+            optionRepository.save(option);
+        });
+
+        return product;
     }
 
     @Transactional
@@ -62,17 +66,12 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        productRepository.findById(id).ifPresentOrElse(
-            product -> productRepository.deleteById(id),
-            () -> { throw new ProductNotFoundException("해당 id를 가지고있는 Product 객체가 없습니다."); }
-        );
-    }
+        productRepository.findById(id)
+            .ifPresentOrElse(product -> productRepository.deleteById(id),
+                () -> {
+                    throw new ProductNotFoundException("해당 id를 가지고있는 Product 객체가 없습니다.");
+                }
+            );
 
-    private void checkMinimumOption(Product product) {
-        if (!skipOptionCheck && (product.getOptions() == null || product.getOptions()
-            .isEmpty())) {
-            throw new MinimumOptionException(
-                "[상품 ID: " + product.getId() + "]의 옵션이 없습니다. 옵션을 추가해주세요.");
-        }
     }
 }

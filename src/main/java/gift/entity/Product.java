@@ -16,7 +16,6 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Entity
 @Table(name = "products")
@@ -41,7 +40,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Option> options = new ArrayList<>();
 
-    public Product() {
+    protected Product() {
     }
 
     public Product(String name, Integer price, String img, Category category) {
@@ -72,7 +71,6 @@ public class Product {
     }
 
     public List<Option> getOptions() {
-        options.sort(Comparator.comparing(Option::getId));
         return options;
     }
 
@@ -83,4 +81,16 @@ public class Product {
         this.category = category;
     }
 
+    public List<Option> sortAndBringOptions() {
+        options.sort(Comparator.comparing(Option::getId));
+        return options;
+    }
+
+    public void removeOption(Option option) {
+        this.options.remove(option);
+    }
+
+    public Integer optionAmount() {
+        return this.options.size();
+    }
 }

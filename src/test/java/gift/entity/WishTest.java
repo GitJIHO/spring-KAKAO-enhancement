@@ -15,7 +15,7 @@ class WishTest {
     @BeforeEach
     void setUp() {
         user = new User("test@example.com", "password123");
-        product = new Product( "상품", 10000, "testImg.jpg",
+        product = new Product("상품", 10000, "testImg.jpg",
             new Category("음식", "testColor", "testImage.jpg", "TestDescription"));
         wish = new Wish(user, product, 1);
     }
